@@ -1,0 +1,198 @@
+import java.util.*;
+import javax.swing.*;
+
+/** Class Task is a model for every task that is going to be added
+* This class also has some methods to manipulate with tasks
+*
+* @author Ermira Veliu    
+*/
+
+public class Task{
+ 
+   String name; //name of the task
+   java.util.Date startTime; //time when a task was added
+   java.util.Date finishedTime = null; //time when a task must be finished
+   long progress = 0; //progress of a task
+   
+   //These variables are used to get the time whet the task must be finished   
+   private int year;  
+   private int month;
+   private int date;
+   private int hrs; 
+   private int min;  
+
+    
+   //Constructor methods with no arguments 
+   public Task (){}
+   
+   //Constructor method with one String argument and five Integer argurments
+   public Task( String name, int year, int month, int date, int hrs, int min){
+      
+      this.name = name;
+      this.startTime = new Date();
+      this.year = year;  
+      this.month = month;
+      this.date = date;
+      this.hrs = hrs; 
+      this.min = min;   
+      this.finishedTime = new Date( year,  month,  date,  hrs, min);
+     
+      System.out.println(this.name);
+      System.out.println(this.finishedTime);
+      System.out.println(this.startTime.toString());    
+       
+   }  
+   
+/**
+* This methos is used to get the date when a task must be finished.
+* @param n.
+* @return number.
+*/
+
+   public int exception(String n){
+   
+      String numberAsString = "";
+      boolean keepAsking = true;
+      int number = 0;
+      
+   // Exception handling using try catch
+      while(keepAsking){      
+           
+         keepAsking = false;
+      
+         try{  
+                             
+            numberAsString = JOptionPane.showInputDialog("Add" + n);
+            number = new Integer(numberAsString).intValue();            
+         
+         }
+            
+            
+         catch(NumberFormatException e){
+         
+            if(numberAsString != null){         
+               JOptionPane.showMessageDialog(null,"Please enter only numeric values!", null, JOptionPane.ERROR_MESSAGE);
+               keepAsking = true;
+            }
+            
+            else{ System.exit(0); }
+         }       
+      } 
+      return number;   
+   }
+   
+/** 
+*This method adds a new task, the time when it was added and also the time when this task must be finished
+*@param e
+*@return newTask.
+*/
+   
+   
+   public Task addATask(){
+   
+      Task t = new Task();      
+           
+      String input = "";
+    
+      input = JOptionPane.showInputDialog("Add a new task");
+      JOptionPane.showMessageDialog(null, "Add the date when this task must be finished");
+           
+      //Adding date
+      int date =  t.exception(" day"); 
+      
+      boolean keepAsking1 = true; 
+      
+      while(keepAsking1){    
+      
+         if ( date < 0 || date> 31 ){ 
+         
+            JOptionPane.showMessageDialog(null, "Please add a number from 1 to 31");
+            date =  t.exception(" date");
+         
+         } 
+         
+         else  { keepAsking1 = false;}
+        
+      } 
+      
+      //Adding month
+      int month = ( t.exception(" month"))-1;
+      
+      boolean keepAsking2 = true ;
+      
+      while(keepAsking2){    
+      
+         if ( month < 0 || month > 12 ){ 
+         
+            JOptionPane.showMessageDialog(null, "Please add a number from 1 to 12");
+            month =  t.exception(" month");
+         
+         } 
+         
+         else  { keepAsking2 = false;}
+        
+      }
+      
+        
+      //Adding year
+      boolean keepAsking3 = true;
+        
+      int year =  t.exception(" year");  
+      
+      while(keepAsking3){    
+      
+         if ( year < 2020  ){ 
+         
+            JOptionPane.showMessageDialog(null, "Please add a year starting from 2020");
+            year = t.exception(" year") ;
+         
+         } 
+         
+         else  { keepAsking3 = false;}
+        
+      }
+        
+      //Adding hour
+      boolean keepAsking4 = true;
+      
+      int hrs =  t.exception(" hour"); 
+      
+      while(keepAsking4){    
+      
+         if ( hrs < 0 || hrs > 23 ){ 
+         
+            JOptionPane.showMessageDialog(null, "Please add a number from 1 to 24");
+            hrs = t.exception(" hours");
+         
+         } 
+         
+         else  { keepAsking4 = false;} 
+        
+      }
+        
+      //Adding minute
+      boolean keepAsking5 = true;
+      
+      int min =  t.exception(" minute");
+      
+      while(keepAsking5){    
+      
+         if ( min < 0 || min > 59 ){ 
+         
+            JOptionPane.showMessageDialog(null, "Please add a number from 1 to 59");
+            min =  t.exception(" minute");
+         
+         }
+            
+         else  { keepAsking5 = false;}
+        
+      }
+      
+   
+      Task newTask = new Task( input, year - 1900, month, date, hrs, min);   
+          
+      return newTask;
+         
+   }    
+   
+}
