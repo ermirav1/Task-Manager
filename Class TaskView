@@ -1,0 +1,259 @@
+import java.awt.*;
+import javax.swing.*;
+import java.awt.event.*;
+import java.util.*;
+import java.awt.Graphics;
+
+/** 
+* Class TaskView is the view class of the project that inherits the JFrame, which is used to show the
+* user interface, which the user interacts with, using data provided from the model class.
+*
+* @author Ermira Veliu
+*/
+
+public class TaskView extends JFrame implements ActionListener{
+
+   ArrayList <Task> allTasks = new ArrayList <> (); //Tasks are going to be saved in this ArrayList
+   ArrayList <Task> finishedTasks = new ArrayList <> (); //Finished tasks are going to be saved in this ArrayList
+
+   //Declation of buttons
+   JButton jb; 
+   JButton jb1; 
+   JButton jb2;
+   JButton jb3; 
+   JButton jb4; 
+   JButton jb5;
+   JButton jb6;
+   
+   //Name of a task 
+   String name = ""; 
+  
+   
+   // Frame dimensions
+   private int width = 500;
+   private int height = 350;
+   
+   
+   // Constructor method 
+   public TaskView(){
+   
+   
+      //JFrame
+      setTitle("Task Manager");
+      setSize(width, height);      
+      setDefaultCloseOperation(EXIT_ON_CLOSE);
+      setLayout(null);
+      setVisible(true);
+      
+      //JPanel
+      JPanel panel = new JPanel();
+      panel.setBounds(0, 0, width+200, height+200);
+      add(panel);  //adding Jpanel in JFrame
+      panel.setLayout(null);
+      panel.setBackground(new Color(170, 170, 170));
+      
+      //JLabel     
+      JLabel label = new JLabel();
+      label.setText("Welcome to Task Manager!");
+      label.setBounds( 165, 30, 220, 30);
+      label.setForeground(Color.white);
+      panel.add(label); //adding JLabel in panel
+      
+      // Button 1 
+      panel.add(jb = new JButton("Add a task")); // adding button in JFrame
+      jb.setBounds( 20, 90, 200, 30);
+      jb.setBackground(Color.WHITE);  
+      jb.addActionListener(this);
+      
+      // Button 2
+      panel.add(jb1 = new JButton("Show tasks in progress"));  // adding button in JFrame
+      jb1.setBounds(20, 90 + 50, 200, 30);
+      jb1.setBackground(Color.WHITE);
+      jb1.addActionListener(this);
+      
+      // Button 3 
+      panel.add(jb2 = new JButton("Delete a task"));  // adding button in JFrame
+      jb2.setBounds(20, 90+100, 200, 30);
+      jb2.setBackground(Color.WHITE);
+      jb2.addActionListener(this);
+      
+      // Button 4 
+      panel.add(jb3 = new JButton("Finish a task")); // adding button in JFrame
+      jb3.setBounds( 260, 90, 200, 30);
+      jb3.setBackground(Color.WHITE);  
+      jb3.addActionListener(this);
+      
+      // Button 5 
+      panel.add(jb4 = new JButton("See tasks details")); // adding button in JFrame
+      jb4.setBounds( 260, 90 + 50, 200, 30);
+      jb4.setBackground(Color.WHITE);  
+      jb4.addActionListener(this);
+      
+      // Button 6 
+      panel.add(jb5 = new JButton("Delete all tasks")); // adding button in JFrame
+      jb5.setBounds( 260, 90 + 100, 200, 30);
+      jb5.setBackground(Color.WHITE);  
+      jb5.addActionListener(this);
+      
+      // Button 7
+      panel.add(jb6 = new JButton("Show finished tasks"));  // adding button in JFrame
+      jb6.setBounds(150, 90 + 150, 200, 30);
+      jb6.setBackground(Color.WHITE);
+      jb6.addActionListener(this);   
+           
+   }
+         
+/** 
+*This method activates the buttons based on which one is clicked
+*@param e
+*@return Nothing.
+*/
+
+   public  void actionPerformed(ActionEvent e){
+   
+      Task t = new Task(); //instance of the class Task
+   
+      // This button adds a task 
+      if (e.getSource() == jb){ 
+      
+         allTasks.add(t.addATask());
+         System.out.println(allTasks.toString()); 
+         
+      }
+         
+      // This button shows all the tasks that were added       
+      if(e.getSource() == jb1){ 
+      
+         String tasks = ""; 
+       
+         if(allTasks.size() == 0){JOptionPane.showMessageDialog(null,"No task has been added");}
+         
+         else{
+         
+            for(int i = 0; i < allTasks.size(); i++){            
+                
+               tasks = tasks + ( i+1 ) + ". " +  allTasks.get(i).name + "\n";
+                 
+            }         
+            
+            JOptionPane.showMessageDialog(null, "All tasks: \n" + tasks );     
+           
+         }
+                         
+      }  
+      
+     //This button deletes a task
+      if(e.getSource() == jb2){  
+      
+         String tasks = ""; 
+       
+         if(allTasks.size() == 0){JOptionPane.showMessageDialog(null,"No task has been added");}
+         
+         else{
+         
+            for(int i = 0; i < allTasks.size(); i++){            
+                
+               tasks = tasks + ( i+1 ) + ". " +  allTasks.get(i).name + "\n";
+               
+            } 
+         
+          String s = JOptionPane.showInputDialog( "Which task do you want to delete? \n" + tasks);;
+         
+          int k = new Integer(s).intValue(); 
+         
+            if(s == null){System.exit(0);}
+            
+            else{
+            
+               if(k > allTasks.size()) { JOptionPane.showMessageDialog(null, "There is no task with that number");}
+                   
+               else{ allTasks.remove(k-1);}
+            }
+            
+         }
+       
+      }
+      
+      //This buttton moves a task to finished tasks
+      if(e.getSource() == jb3){       
+           
+         String tasks = ""; 
+       
+         if(allTasks.size() == 0){JOptionPane.showMessageDialog(null,"No task has been added");}
+         
+         else {
+          
+            for(int i = 0; i < allTasks.size(); i++){
+                            
+               tasks = tasks + ( i+1 ) + ". " +  allTasks.get(i).name + "\n" ;
+                           
+            } 
+            
+            int s = new Integer(JOptionPane.showInputDialog("Which task have you finished? \n" + tasks)).intValue();           
+            finishedTasks.add(allTasks.get(s-1));
+            allTasks.remove(s-1);
+         
+         }              
+             
+      }      
+      
+      //This button shows details for a task
+      if(e.getSource() == jb4){       
+             
+         Date d = new Date();  
+         long time2 = 0;
+         long timeInMillis = 0;       
+         String tasks = ""; 
+       
+         if(allTasks.size() == 0){JOptionPane.showMessageDialog(null,"No task has been added"); }
+         
+         else{
+          
+            for(int i = 0; i < allTasks.size(); i++){
+            
+               timeInMillis = ((allTasks.get(i).finishedTime.getTime())/1000) - ((allTasks.get(i).startTime.getTime())/1000);
+               time2 = ((allTasks.get(i).finishedTime.getTime())/1000) - ((d.getTime())/1000);
+               
+               double progress = (timeInMillis-10)/(time2/10);                  
+                
+               tasks = tasks + ( i+1 ) + ". " + "Task: " +  allTasks.get(i).name + "\n" + "    Started time: " + allTasks.get(i).startTime + "\n" + "    Finished Time: " + allTasks.get(i).finishedTime + "\n    Progress: " + progress + "%\n" ;
+            
+            } 
+            
+            JOptionPane.showMessageDialog(null, tasks);
+                      
+         }
+       
+      }
+      
+      //This button deletes all tasks
+      if(e.getSource() == jb5){  
+          
+         allTasks.clear();
+       
+      }      
+      
+      //This button shows finished tasks
+      if(e.getSource() == jb6){  
+       
+         String tasks = ""; 
+       
+         if(finishedTasks.size() == 0){JOptionPane.showMessageDialog(null,"No task has been finished");}
+         
+         else{
+         
+            for(int i = 0; i < finishedTasks.size(); i++){            
+                
+               tasks = tasks + ( i+1 ) + ". " +  finishedTasks.get(i).name + "\n";
+                                     
+            }     
+            
+            JOptionPane.showMessageDialog(null, "All tasks: \n" + tasks );
+         
+         }           
+       
+      } 
+   
+   }
+   
+}
